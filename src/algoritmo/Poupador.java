@@ -17,9 +17,7 @@ public class Poupador extends ProgramaPoupador {
 	private int[][] movements = {
 			{0, 0}, {0, -1}, {0, 1}, {1, 0}, {-1, 0}
 	};
-	private int[][] viewMove = {
-			{-2, -2}, {-2, -1}, {-2, 0}, {-2, 1}, {-2, 2}, {-1, -2}, {-1, -1}, {-1, 0}, {-1, 1}, {-1, 2}, {0, -2}, {0, -1}, {0, 1}, {0, 2}, {1, -2}, {1, -1}, {1, 0}, {1, 1}, {1, 2}, {2, -2}, {2, -1}, {2, 0}, {2, 1}, {2, 2},
-	};
+	private int[][] viewMove = { {-2, -2}, {-1, -2}, {0, -2}, {1, -2}, {2, -2}, {-2, -1}, {-1, -1}, {0, -1}, {1, -1}, {2, -1}, {-2, 0}, {-1, 0}, {1, 0}, {2, 0}, {-2, 1}, {-1, 1}, {0, 1}, {1, 1}, {2, 1}, {-2, 2}, {-1, 2}, {0, 2}, {1, 2}, {2, 2},	};
 	private final Collection<Integer> cima = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
 	private final Collection<Integer> direita = Arrays.asList(12, 13, 3, 4, 8, 9, 17, 18, 22, 23);
 	private final Collection<Integer> baixo = Arrays.asList(14, 15, 16, 17, 18, 19, 20, 21, 22, 23);
@@ -27,8 +25,8 @@ public class Poupador extends ProgramaPoupador {
 	
 	public int acao() {
 		memory();
-		move();
-		return (int) (Math.random() * 5);
+		int x = move();
+		return x;
 	}
 
 	private void memory() {
@@ -36,15 +34,17 @@ public class Poupador extends ProgramaPoupador {
 		int[] see = sensor.getVisaoIdentificacao();
 		map[pointNow.x][pointNow.y] = visited;
 		for(int i = 0; i < see.length; i++) {
-			Point pointNew = new Point(pointNow.x + viewMove[i][0],pointNow.y + viewMove[i][1]);
-			if(see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0){
+			if (see[i] != Constantes.foraAmbiene) {
+				Point pointNew = new Point(pointNow.x + viewMove[i][0], pointNow.y + viewMove[i][1]);
+				if (see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0) {
 
-			}
-			if(see[i] == Constantes.numeroMoeda && !memoryCoin.contains(pointNew)){
-				memoryCoin.add(pointNew);
-			}
-			if(map[pointNew.x][pointNew.y] != visited && see[i] != Constantes.semVisao){
-				map[pointNew.x][pointNew.y] = see[i];
+				}
+				if (see[i] == Constantes.numeroMoeda && !memoryCoin.contains(pointNew)) {
+					memoryCoin.add(pointNew);
+				}
+				if (map[pointNew.x][pointNew.y] != visited && see[i] != Constantes.semVisao) {
+					map[pointNew.x][pointNew.y] = see[i];
+				}
 			}
 		}
 	}
@@ -73,7 +73,7 @@ public class Poupador extends ProgramaPoupador {
 				}
 			}
 		}
-		return 0;
+		return (int) (Math.random() * 5);
 	}
 
 

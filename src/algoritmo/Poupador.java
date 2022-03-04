@@ -5,7 +5,6 @@ import controle.Constantes;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class Poupador extends ProgramaPoupador {
@@ -18,21 +17,25 @@ public class Poupador extends ProgramaPoupador {
 			{0, 0}, {0, -1}, {0, 1}, {1, 0}, {-1, 0}
 	};
 	private int[][] viewMove = { {-2, -2}, {-1, -2}, {0, -2}, {1, -2}, {2, -2}, {-2, -1}, {-1, -1}, {0, -1}, {1, -1}, {2, -1}, {-2, 0}, {-1, 0}, {1, 0}, {2, 0}, {-2, 1}, {-1, 1}, {0, 1}, {1, 1}, {2, 1}, {-2, 2}, {-1, 2}, {0, 2}, {1, 2}, {2, 2},	};
-	private final Collection<Integer> cima = Arrays.asList(0, 1, 2, 3, 4, 5, 6, 7, 8, 9);
-	private final Collection<Integer> direita = Arrays.asList(12, 13, 3, 4, 8, 9, 17, 18, 22, 23);
-	private final Collection<Integer> baixo = Arrays.asList(14, 15, 16, 17, 18, 19, 20, 21, 22, 23);
-	private final Collection<Integer> esquerda = Arrays.asList(10, 11, 0, 1, 5, 6, 14, 15, 19, 20);
+	private final int[] up = {7, 6, 8};
+	private final int[] right = {12, 8, 17};
+	private final int[] down = {16, 15, 17};
+	private final int[] left = {11, 6, 15};
+	private int fear = 0;
 	
 	public int acao() {
 		memory();
-		int x = move();
-		return x;
+		System.out.println("Fear " + fear);
+		return coin();
 	}
 
 	private void memory() {
 		Point pointNow = sensor.getPosicao();
 		int[] see = sensor.getVisaoIdentificacao();
 		map[pointNow.x][pointNow.y] = visited;
+		if(sensor.getNumeroDeMoedas() == 0){
+			fear = 0;
+		}
 		for(int i = 0; i < see.length; i++) {
 			if (see[i] != Constantes.foraAmbiene) {
 				Point pointNew = new Point(pointNow.x + viewMove[i][0], pointNow.y + viewMove[i][1]);
@@ -41,6 +44,14 @@ public class Poupador extends ProgramaPoupador {
 				}
 				if (see[i] == Constantes.numeroMoeda && !memoryCoin.contains(pointNew)) {
 					memoryCoin.add(pointNew);
+				}
+				if(memoryCoin.contains(pointNow)){
+					memoryCoin.remove(pointNow);
+					if(fear == 0){
+						fear = 2;
+					} else {
+						fear *= 2;
+					}
 				}
 				if (map[pointNew.x][pointNew.y] != visited && see[i] != Constantes.semVisao) {
 					map[pointNew.x][pointNew.y] = see[i];
@@ -53,28 +64,73 @@ public class Poupador extends ProgramaPoupador {
 		Point pointNow = sensor.getPosicao();
 		int[] see = sensor.getVisaoIdentificacao();
 		List<Integer> ladroes = new ArrayList<>(Arrays.asList(Constantes.numeroLadrao01,Constantes.numeroLadrao02,Constantes.numeroLadrao03,Constantes.numeroLadrao04));
-		for(int i = 0; i < see.length; i++){
-			if(ladroes.contains(see[i])){
-				if(cima.contains(i) && direita.contains(i)){
-					int x = (Math.random() <= 0.5) ? 2 : 4;
-					return x;
+		List<Integer> poupadores = new ArrayList<>(Arrays.asList(Constantes.numeroPoupador01, Constantes.numeroPoupador02));
+		for(int i = 0; i < up.length; i++){
+				if(ladroes.contains(see[up[i]])){
+					fear *= 2;
+					if(see[16] == Constantes.foraAmbiene || see[16] == Constantes.numeroParede || ladroes.contains(see[16]) || poupadores.contains(see[16])){
+						if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
+							return 3;
+						}
+						return 4;
+					}
+					return 2;
 				}
-				if(cima.contains(i) && esquerda.contains(i)){
-					int x = (Math.random() <= 0.5) ? 2 : 3;
-					return x;
+				if(ladroes.contains(see[left[i]])){
+					fear *= 2;
+					if(see[12] == Constantes.foraAmbiene || see[12] == Constantes.numeroParede || ladroes.contains(see[12]) || poupadores.contains(see[12])){
+						if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
+							return 2;
+						}
+						return 1;
+					}
+					return 3;
 				}
-				if(baixo.contains(i) && direita.contains(i)){
-					int x = (Math.random() <= 0.5) ? 1 : 4;
-					return x;
+				if(ladroes.contains(see[right[i]])){
+					fear *= 2;
+					if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
+						if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
+							return 2;
+						}
+						return 1;
+					}
+					return 4;
 				}
-				if(baixo.contains(i) && esquerda.contains(i)){
-					int x = (Math.random() <= 0.5) ? 1 : 3;
-					return x;
+				if(ladroes.contains(see[down[i]])){
+					fear *= 2;
+					if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
+						if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
+							return 3;
+						}
+						return 4;
+					}
+					return 1;
 				}
-			}
 		}
 		return (int) (Math.random() * 5);
 	}
 
+	private int coin(){
+		int[] see = sensor.getVisaoIdentificacao();
+
+		int x = (int) (Math.random() * 1000);
+		if(x < 100 + fear) {
+			System.out.println("MOVE");
+			return move();
+		} else {
+			if(see[7] == Constantes.numeroMoeda){
+				return 1;
+			} else if(see[11] == Constantes.numeroMoeda){
+				return 4;
+			} else if(see[12] == Constantes.numeroMoeda){
+				return 3;
+			} else if(see[16] == Constantes.numeroMoeda) {
+				return 2;
+			} else {
+				return (int) (Math.random() * 5);
+			}
+		}
+
+	}
 
 }

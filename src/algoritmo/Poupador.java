@@ -1,11 +1,10 @@
 package algoritmo;
 
+import algoritmo.path.Graph;
 import controle.Constantes;
-
 import java.awt.*;
 import java.util.*;
 import java.util.List;
-
 
 public class Poupador extends ProgramaPoupador {
 
@@ -16,16 +15,25 @@ public class Poupador extends ProgramaPoupador {
 	private int[][] movements = {
 			{0, 0}, {0, -1}, {0, 1}, {1, 0}, {-1, 0}
 	};
-	private int[][] viewMove = { {-2, -2}, {-1, -2}, {0, -2}, {1, -2}, {2, -2}, {-2, -1}, {-1, -1}, {0, -1}, {1, -1}, {2, -1}, {-2, 0}, {-1, 0}, {1, 0}, {2, 0}, {-2, 1}, {-1, 1}, {0, 1}, {1, 1}, {2, 1}, {-2, 2}, {-1, 2}, {0, 2}, {1, 2}, {2, 2},	};
+	private int[] graphMovements = {-5, 5, 1, -1};
+	private int[][] viewMove = {
+			{-2, -2}, {-1, -2}, {0, -2}, {1, -2}, {2, -2},
+			{-2, -1}, {-1, -1}, {0, -1}, {1, -1}, {2, -1},
+			{-2, 0},  {-1, 0},  {1, 0},  {2, 0}, {-2, 1},
+			{-1, 1},  {0, 1},   {1, 1},  {2, 1}, {-2, 2},
+			{-1, 2},  {0, 2},   {1, 2},  {2, 2},
+	};
 	private final int[] up = {7, 6, 8};
 	private final int[] right = {12, 8, 17};
 	private final int[] down = {16, 15, 17};
 	private final int[] left = {11, 6, 15};
 	private int fear = 0;
-	
+
+	Graph graph = new Graph(900);
+
 	public int acao() {
 		memory();
-		System.out.println("Fear " + fear);
+		// System.out.println("Fear " + fear);
 		return coin();
 	}
 
@@ -39,9 +47,7 @@ public class Poupador extends ProgramaPoupador {
 		for(int i = 0; i < see.length; i++) {
 			if (see[i] != Constantes.foraAmbiene) {
 				Point pointNew = new Point(pointNow.x + viewMove[i][0], pointNow.y + viewMove[i][1]);
-				if (see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0) {
-
-				}
+				if (see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0) {}
 				if (see[i] == Constantes.numeroMoeda && !memoryCoin.contains(pointNew)) {
 					memoryCoin.add(pointNew);
 				}
@@ -56,6 +62,19 @@ public class Poupador extends ProgramaPoupador {
 				if (map[pointNew.x][pointNew.y] != visited && see[i] != Constantes.semVisao) {
 					map[pointNew.x][pointNew.y] = see[i];
 				}
+
+				if (see[i] != Constantes.semVisao && see[i] != Constantes.numeroParede) {
+					for (int j = 1; j < 5; j++) {
+						Point pointNewAdj = new Point(pointNew.x + movements[j][0], pointNew.y + movements[j][1]);
+						int xAdj = pointNow.x - pointNewAdj.x; // -2 < x < 2
+						int yAdj = pointNow.y - pointNewAdj.y; // -2 < y < 2
+						if (xAdj <= 2 && xAdj >= -2 && yAdj <= 2 && yAdj >= -2) {
+							if (see[i + graphMovements[j-1]] != Constantes.numeroParede && see[i + graphMovements[j-1]] != Constantes.foraAmbiene) {
+								graph.addEdge2(pointNew.x, pointNew.y, pointNewAdj.x, pointNewAdj.y);
+							}
+						}
+					}
+				}
 			}
 		}
 	}
@@ -66,46 +85,46 @@ public class Poupador extends ProgramaPoupador {
 		List<Integer> ladroes = new ArrayList<>(Arrays.asList(Constantes.numeroLadrao01,Constantes.numeroLadrao02,Constantes.numeroLadrao03,Constantes.numeroLadrao04));
 		List<Integer> poupadores = new ArrayList<>(Arrays.asList(Constantes.numeroPoupador01, Constantes.numeroPoupador02));
 		for(int i = 0; i < up.length; i++){
-				if(ladroes.contains(see[up[i]])){
-					fear *= 2;
-					if(see[16] == Constantes.foraAmbiene || see[16] == Constantes.numeroParede || ladroes.contains(see[16]) || poupadores.contains(see[16])){
-						if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
-							return 3;
-						}
-						return 4;
-					}
-					return 2;
-				}
-				if(ladroes.contains(see[left[i]])){
-					fear *= 2;
-					if(see[12] == Constantes.foraAmbiene || see[12] == Constantes.numeroParede || ladroes.contains(see[12]) || poupadores.contains(see[12])){
-						if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
-							return 2;
-						}
-						return 1;
-					}
-					return 3;
-				}
-				if(ladroes.contains(see[right[i]])){
-					fear *= 2;
+			if(ladroes.contains(see[up[i]])){
+				fear *= 2;
+				if(see[16] == Constantes.foraAmbiene || see[16] == Constantes.numeroParede || ladroes.contains(see[16]) || poupadores.contains(see[16])){
 					if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
-						if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
-							return 2;
-						}
-						return 1;
+						return 3;
 					}
 					return 4;
 				}
-				if(ladroes.contains(see[down[i]])){
-					fear *= 2;
+				return 2;
+			}
+			if(ladroes.contains(see[left[i]])){
+				fear *= 2;
+				if(see[12] == Constantes.foraAmbiene || see[12] == Constantes.numeroParede || ladroes.contains(see[12]) || poupadores.contains(see[12])){
 					if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
-						if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
-							return 3;
-						}
-						return 4;
+						return 2;
 					}
 					return 1;
 				}
+				return 3;
+			}
+			if(ladroes.contains(see[right[i]])){
+				fear *= 2;
+				if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
+					if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
+						return 2;
+					}
+					return 1;
+				}
+				return 4;
+			}
+			if(ladroes.contains(see[down[i]])){
+				fear *= 2;
+				if(see[7] == Constantes.foraAmbiene || see[7] == Constantes.numeroParede || ladroes.contains(see[7]) || poupadores.contains(see[7])){
+					if(see[11] == Constantes.foraAmbiene || see[11] == Constantes.numeroParede || ladroes.contains(see[11]) || poupadores.contains(see[11])){
+						return 3;
+					}
+					return 4;
+				}
+				return 1;
+			}
 		}
 		return (int) (Math.random() * 5);
 	}

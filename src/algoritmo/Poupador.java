@@ -15,6 +15,7 @@ public class Poupador extends ProgramaPoupador {
 	private int[][] movements = { /// still, up, down, right, left
 			{0, 0}, {0, -1}, {0, 1}, {1, 0}, {-1, 0}
 	};
+	private int[] graphMovements = {-5, 5, 1, -1};
 	private int[][] viewMove = { {-2, -2}, {-1, -2}, {0, -2}, {1, -2}, {2, -2}, {-2, -1}, {-1, -1}, {0, -1}, {1, -1}, {2, -1}, {-2, 0}, {-1, 0}, {1, 0}, {2, 0}, {-2, 1}, {-1, 1}, {0, 1}, {1, 1}, {2, 1}, {-2, 2}, {-1, 2}, {0, 2}, {1, 2}, {2, 2},	};
 	private final int[] up = {0, 1, 3, 4, 5, 6, 7, 8, 9};
 	private final int[] right = {3, 4, 8, 9, 12, 13, 17, 18, 22, 23};
@@ -40,9 +41,7 @@ public class Poupador extends ProgramaPoupador {
 		for(int i = 0; i < see.length; i++) {
 			if (see[i] != Constantes.foraAmbiene) {
 				Point pointNew = new Point(pointNow.x + viewMove[i][0], pointNow.y + viewMove[i][1]);
-				if (see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0) {
-
-				}
+				if (see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0) {}
 				if (see[i] == Constantes.numeroMoeda && !memoryCoin.contains(pointNew)) {
 					memoryCoin.add(pointNew);
 				}
@@ -56,6 +55,19 @@ public class Poupador extends ProgramaPoupador {
 				}
 				if (map[pointNew.x][pointNew.y] != visited && see[i] != Constantes.semVisao) {
 					map[pointNew.x][pointNew.y] = see[i];
+				}
+
+				if (see[i] != Constantes.semVisao && see[i] != Constantes.numeroParede) {
+					for (int j = 1; j < 5; j++) {
+						Point pointNewAdj = new Point(pointNew.x + movements[j][0], pointNew.y + movements[j][1]);
+						int xAdj = pointNow.x - pointNewAdj.x; // -2 < x < 2
+						int yAdj = pointNow.y - pointNewAdj.y; // -2 < y < 2
+						if (xAdj <= 2 && xAdj >= -2 && yAdj <= 2 && yAdj >= -2) {
+							if (see[i + graphMovements[j-1]] != Constantes.numeroParede && see[i + graphMovements[j-1]] != Constantes.foraAmbiene) {
+								graph.addEdge2(pointNew.x, pointNew.y, pointNewAdj.x, pointNewAdj.y);
+							}
+						}
+					}
 				}
 			}
 		}

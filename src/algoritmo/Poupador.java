@@ -25,6 +25,7 @@ public class Poupador extends ProgramaPoupador {
 	private int fear = 0;
 	Graph graph = new Graph(900);
 	private Boolean canGoToBank = false;
+	private Boolean goingToBank = false;
 
 	public int acao() {
 		memory();
@@ -71,6 +72,7 @@ public class Poupador extends ProgramaPoupador {
 				}
 			}
 		}
+		if (graph.canRouteToBank(pointNow.x, pointNow.y)) canGoToBank = true;
 	}
 
 	private int run() {
@@ -127,11 +129,19 @@ public class Poupador extends ProgramaPoupador {
 		Point pointNow = sensor.getPosicao();
 		int y = run();
 		if(y != 0){
+			goingToBank = false;
 			return y;
 		}
+		if(goingToBank){
+			moveToBank();
+		}
 		int x = (int) (Math.random() * 1000);
-		if(x == 100 + fear) {
-			return (int) (Math.random() * 5);
+		System.out.println("Fear " + fear);
+		if(x <= 100 + fear && canGoToBank) {
+			System.out.println("Banco");
+			goingToBank = true;
+			routeToBank();
+			return moveToBank();
 		} else {
 			if(see[7] == Constantes.numeroMoeda){
 				return 1;
@@ -145,10 +155,9 @@ public class Poupador extends ProgramaPoupador {
 				int z = (int) (Math.random() * 100);
 				int[] visitedArray = { 25, 50, 75, 100};
 				int div = 1;
-				System.out.println(Arrays.toString(visitedArray));
 				for(int i = 0; i < 4; i++){
 					if(z <= visitedArray[i]){
-						System.out.println(z);
+//						System.out.println(z);
 						return (i + 1);
 					}
 				}
@@ -158,9 +167,9 @@ public class Poupador extends ProgramaPoupador {
 	}
 
 	LinkedList<Point> pointsToGo = new LinkedList<>();
-	private void goToBank() {
+	private void routeToBank() {
 		Point pointNow = sensor.getPosicao();
-		if (graph.canRouteToBank(pointNow.x, pointNow.y)) canGoToBank = true;
+
 		if (canGoToBank) {
 			LinkedList<Integer> shortestPathToBank = graph.shortestDistance(pointNow.x, pointNow.y, 8 ,8);
 
@@ -191,6 +200,7 @@ public class Poupador extends ProgramaPoupador {
 			pointsToGo.removeFirst();
 			return 1; // CIMA
 		} else {
+			fear = 0;
 			return coin();
 		}
 	}

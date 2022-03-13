@@ -32,12 +32,71 @@ public class Graph {
         return count;
     }
 
+    public int[][] mapPositionsToPosition(int num_v) {
+        // 900 -> pos_x = 29, pos_y = 29
+        // 30 -> pos_x = 0, pos_y = 1
+        int pos_x = num_v%30;
+        int pos_y = Math.abs(num_v/30);
+
+        if (num_v%30 == 0) {
+            pos_x = 30;
+        }
+
+        return new int[][]{{pos_x}, {pos_y}};
+    }
+
     public void addEdge2(int pos_x, int pos_y, int pos_x2, int pos_y2) {
         int current_v = mapPositions(pos_x, pos_y);
         int linked_v = mapPositions(pos_x2, pos_y2);
 
         adj.get(current_v).add(linked_v);
         adj.get(linked_v).add(current_v);
+    }
+
+    public Boolean canRouteToBank(int pos_x, int pos_y) {
+        int source_v = mapPositions(pos_x, pos_y);
+        int destination_v = mapPositions(8, 8);
+
+        int[] predecessor = new int[vertices_size];
+        int[] distance = new int[vertices_size];
+
+        return BFS(source_v, destination_v, vertices_size, predecessor, distance);
+    }
+
+    public LinkedList<Integer> shortestDistance(int pos_x, int pos_y, int pos_x2, int pos_y2) {
+        int source_v = mapPositions(pos_x, pos_y);
+        int destination_v = mapPositions(pos_x2, pos_y2);
+
+        int[] predecessor = new int[vertices_size];
+        int[] distance = new int[vertices_size];
+
+        if (!BFS(source_v, destination_v, vertices_size, predecessor, distance)) {
+            System.out.println("Given source and destination are not connected");
+        }
+
+        // LinkedList to store path
+        LinkedList<Integer> path = new LinkedList<Integer>();
+        int crawl = destination_v;
+        path.add(crawl);
+        while (predecessor[crawl] != -1) {
+            path.add(predecessor[crawl]);
+            crawl = predecessor[crawl];
+        }
+
+        // Print distance
+        System.out.println("Shortest path length is: " + distance[destination_v]);
+
+        // Print path
+        System.out.println("Path is :");
+
+        LinkedList<Integer> result = new LinkedList<>();
+        for (int i = path.size() - 1; i >= 0; i--) {
+            System.out.print(path.get(i) + " ");
+            result.add(mapPositionsToPosition(path.get(i))[0][0]);
+            result.add(mapPositionsToPosition(path.get(i))[1][0]);
+        }
+
+        return result;
     }
 
     // function to form edge between two vertices

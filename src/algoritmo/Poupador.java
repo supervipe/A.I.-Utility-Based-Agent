@@ -28,13 +28,18 @@ public class Poupador extends ProgramaPoupador {
 	private final int[] down = {16, 15, 17};
 	private final int[] left = {11, 6, 15};
 	private int fear = 0;
+	private Boolean canGoToBank = false;
 
 	Graph graph = new Graph(900);
 
 	public int acao() {
 		memory();
-		// System.out.println("Fear " + fear);
-		return coin();
+		goToBank();
+		if (!canGoToBank) {
+			return coin();
+		} else {
+			return moveToBank();
+		}
 	}
 
 	private void memory() {
@@ -134,7 +139,6 @@ public class Poupador extends ProgramaPoupador {
 
 		int x = (int) (Math.random() * 1000);
 		if(x < 100 + fear) {
-			System.out.println("MOVE");
 			return move();
 		} else {
 			if(see[7] == Constantes.numeroMoeda){
@@ -152,4 +156,41 @@ public class Poupador extends ProgramaPoupador {
 
 	}
 
+	LinkedList<Point> pointsToGo = new LinkedList<>();
+	private void goToBank() {
+		Point pointNow = sensor.getPosicao();
+		if (graph.canRouteToBank(pointNow.x, pointNow.y)) canGoToBank = true;
+		if (canGoToBank) {
+			LinkedList<Integer> shortestPathToBank = graph.shortestDistance(pointNow.x, pointNow.y, 8 ,8);
+
+			for (int i = 2; i <= shortestPathToBank.size()-2; i=i+2) {
+				Point nextPoint = new Point(shortestPathToBank.get(i), shortestPathToBank.get(i+1));
+				pointsToGo.add(nextPoint);
+			}
+		}
+	}
+
+	private int moveToBank() {
+		Point pointNow = sensor.getPosicao();
+		int x, y;
+
+		x = pointsToGo.get(0).x - pointNow.x;
+		y = pointsToGo.get(0).y - pointNow.y;
+
+		if (x == 1 && y == 0) {
+			pointsToGo.removeFirst();
+			return 3; // DIREITA
+		} else if (x == 0 && y == 1) {
+			pointsToGo.removeFirst();
+			return 2; // BAIXO
+		} else if (x == -1 && y == 0) {
+			pointsToGo.removeFirst();
+			return 4; // ESQUERDA
+		} else if (x == 0 && y == -1) {
+			pointsToGo.removeFirst();
+			return 1; // CIMA
+		} else {
+			return coin();
+		}
+	}
 }

@@ -140,7 +140,6 @@ public class Poupador extends ProgramaPoupador {
 		if(x <= 100 + fear && canGoToBank) {
 			System.out.println("Banco");
 			goingToBank = true;
-			routeToBank();
 			return moveToBank();
 		} else {
 			if(see[7] == Constantes.numeroMoeda){
@@ -181,6 +180,7 @@ public class Poupador extends ProgramaPoupador {
 	}
 
 	private int moveToBank() {
+		routeToBank();
 		Point pointNow = sensor.getPosicao();
 		int x, y;
 

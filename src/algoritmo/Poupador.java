@@ -26,6 +26,7 @@ public class Poupador extends ProgramaPoupador {
 	private final int[] right = {12, 8, 17};
 	private final int[] down = {16, 15, 17};
 	private final int[] left = {11, 6, 15};
+	private int[] positionAnt = {-1, -1};
 	private int fear = 0;
 	private int multiplicador = 1;
 	LinkedList<Point> pointsToGo = new LinkedList<>();
@@ -34,12 +35,15 @@ public class Poupador extends ProgramaPoupador {
 
 	public int acao() {
 		Point pointNow = sensor.getPosicao();
-		memory(pointNow);
+		int c = memory(pointNow);
+		if(c != -1){
+			return c;
+		}
 		System.out.println("FEAR " + fear);
 		return move(pointNow);
 	}
 
-	private void memory(Point pointNow) {
+	private int memory(Point pointNow) {
 		int[] see = sensor.getVisaoIdentificacao();
 		map[pointNow.x][pointNow.y] = visited;
 		if(sensor.getNumeroDeMoedas() == 0){
@@ -79,9 +83,15 @@ public class Poupador extends ProgramaPoupador {
 				}
 			}
 		}
+		if(pointNow.x == positionAnt[0] && pointNow.y == positionAnt[1]){
+			return (int) (Math.random() * 5);
+		}
+		positionAnt[0] = pointNow.x;
+		positionAnt[1] = pointNow.y;
 		if(sensor.getNumeroDeMoedas() == 0){
 			multiplicador++;
 		}
+		return -1;
 	}
 
 	private int run() {
@@ -187,7 +197,6 @@ public class Poupador extends ProgramaPoupador {
 			return y;
 		}
 		if (graph.canRouteToBank(pointNow.x, pointNow.y) && sensor.getNumeroDeMoedas() > 3 && fear > 1000) {
-			System.out.println("ENTROU");
 			pointsToGo.addAll(graph.pointsToGo(pointNow));
 
 			int point_x, point_y;

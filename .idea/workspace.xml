@@ -2,23 +2,12 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="12686e5b-f762-44d1-8040-fd8353dcf173" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/runConfigurations.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Trabalho IA - Poupador.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Trabalho IA - Poupador.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/IMAGE/EXIT.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/IMAGE/PAUSE.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/IMAGE/PLAY.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/IMAGE/STOP.JPG" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/IMAGE/carregaArquivo.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/algoritmo/Ladrao.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/algoritmo/Movement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/algoritmo/Position.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/algoritmo/Poupador.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/classes/aplicacao/Executa.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labirintos/Labirinto.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Labirintos/Labirinto.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/algoritmo/Poupador.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/algoritmo/Poupador.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/classes/algoritmo/path/Graph.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/algoritmo/path/Graph.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algoritmo/Poupador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/algoritmo/Poupador.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/algoritmo/path/Graph.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/algoritmo/path/Graph.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -74,5 +63,36 @@
       <updated>1647212245640</updated>
     </task>
     <servers />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/algoritmo/path/Graph.java</url>
+          <line>57</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/algoritmo/Poupador.java</url>
+          <line>274</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/algoritmo/Poupador.java</url>
+          <line>212</line>
+          <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/algoritmo/Poupador.java</url>
+          <line>216</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="chances" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>

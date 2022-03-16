@@ -24,11 +24,19 @@ public class Graph {
         // pos_x = 29, pos_y = 29 -> 900
         // pos_x =  1, pos_y =  0 ->  30
         int count = 0;
+        if(pos_y != 0){
+            pos_y -=1;
+        }
         for (int y = 0; y < pos_y*30; y++) {
             count++;
         }
-        for (int x = 0; x < pos_x; x++) {
-            count++;
+
+        if (pos_x == 0) {
+            return count;
+        } else {
+            for (int x = 0; x < pos_x; x++) {
+                count++;
+            }
         }
         return count;
     }
@@ -36,11 +44,15 @@ public class Graph {
     public int[][] mapPositionsToPosition(int num_v) {
         // 900 -> pos_x = 29, pos_y = 29
         // 30 -> pos_x = 0, pos_y = 1
-        int pos_x = num_v%30;
-        int pos_y = Math.abs(num_v/30);
+        int pos_x = ((num_v+1)%30) - 1;
+        int pos_y = Math.abs((num_v+1)/30);
 
-        if (num_v%30 == 0) {
-            pos_x = 30;
+        if ((num_v+1)%30 == 0) {
+            if(pos_y == 0) {
+                pos_x = 0;
+            } else {
+                pos_x = 29;
+            }
         }
 
         return new int[][]{{pos_x}, {pos_y}};
@@ -102,13 +114,6 @@ public class Graph {
         }
 
         return result;
-    }
-
-    // function to form edge between two vertices
-    // source and dest
-    public void addEdge(int current_v, int linked_v) {
-        adj.get(current_v).add(linked_v);
-        adj.get(linked_v).add(current_v);
     }
 
     // a modified version of BFS that stores predecessor

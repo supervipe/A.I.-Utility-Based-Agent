@@ -1,5 +1,6 @@
 package algoritmo.path;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -63,6 +64,17 @@ public class Graph {
         return BFS(source_v, destination_v, vertices_size, predecessor, distance);
     }
 
+    public LinkedList<Point> pointsToGo(Point pointNow) {
+        LinkedList<Integer> shortestPathToBank = shortestDistance(pointNow.x, pointNow.y, 8 ,8);
+
+        LinkedList<Point> pointsToGoList = new LinkedList<>();
+        for (int i = 2; i <= shortestPathToBank.size()-2; i=i+2) {
+            Point nextPoint = new Point(shortestPathToBank.get(i), shortestPathToBank.get(i+1));
+            pointsToGoList.add(nextPoint);
+        }
+        return pointsToGoList;
+    }
+
     public LinkedList<Integer> shortestDistance(int pos_x, int pos_y, int pos_x2, int pos_y2) {
         int source_v = mapPositions(pos_x, pos_y);
         int destination_v = mapPositions(pos_x2, pos_y2);
@@ -71,7 +83,7 @@ public class Graph {
         int[] distance = new int[vertices_size];
 
         if (!BFS(source_v, destination_v, vertices_size, predecessor, distance)) {
-            System.out.println("Given source and destination are not connected");
+
         }
 
         // LinkedList to store path
@@ -83,15 +95,8 @@ public class Graph {
             crawl = predecessor[crawl];
         }
 
-        // Print distance
-        System.out.println("Shortest path length is: " + distance[destination_v]);
-
-        // Print path
-        System.out.println("Path is :");
-
         LinkedList<Integer> result = new LinkedList<>();
         for (int i = path.size() - 1; i >= 0; i--) {
-            System.out.print(path.get(i) + " ");
             result.add(mapPositionsToPosition(path.get(i))[0][0]);
             result.add(mapPositionsToPosition(path.get(i))[1][0]);
         }
@@ -104,39 +109,6 @@ public class Graph {
     public void addEdge(int current_v, int linked_v) {
         adj.get(current_v).add(linked_v);
         adj.get(linked_v).add(current_v);
-    }
-
-    // function to print the shortest distance and path
-    // between source vertex and destination vertex
-    public void printShortestDistance(int source, int destination) {
-        // predecessor[i] array stores predecessor of
-        // i and distance array stores distance of i
-        // from s
-        int[] predecessor = new int[vertices_size];
-        int[] distance = new int[vertices_size];
-
-        if (!BFS(source, destination, vertices_size, predecessor, distance)) {
-            System.out.println("Given source and destination" + "are not connected");
-            return;
-        }
-
-        // LinkedList to store path
-        LinkedList<Integer> path = new LinkedList<Integer>();
-        int crawl = destination;
-        path.add(crawl);
-        while (predecessor[crawl] != -1) {
-            path.add(predecessor[crawl]);
-            crawl = predecessor[crawl];
-        }
-
-        // Print distance
-        System.out.println("Shortest path length is: " + distance[destination]);
-
-        // Print path
-        System.out.println("Path is ::");
-        for (int i = path.size() - 1; i >= 0; i--) {
-            System.out.print(path.get(i) + " ");
-        }
     }
 
     // a modified version of BFS that stores predecessor

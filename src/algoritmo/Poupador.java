@@ -50,7 +50,7 @@ public class Poupador extends ProgramaPoupador {
 			fear = 0;
 		}
 		for(int i = 0; i < see.length; i++) {
-			if (see[i] != Constantes.foraAmbiene) {
+			if (see[i] != Constantes.foraAmbiene && see[i] != Constantes.semVisao) {
 				Point pointNew = new Point(pointNow.x + viewMove[i][0], pointNow.y + viewMove[i][1]);
 				if (see[i] == Constantes.numeroBanco && sensor.getNumeroDeMoedas() != 0) {}
 				if (see[i] == Constantes.numeroMoeda && !memoryCoin.contains(pointNew)) {

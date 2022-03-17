@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="fcf1c3a9-ceb2-4814-a08f-e85da9bbcf21" name="Changes" comment="meu">
+    <list default="true" id="fcf1c3a9-ceb2-4814-a08f-e85da9bbcf21" name="Changes" comment="Final">
+      <change afterPath="$PROJECT_DIR$/TRABALHO IA POUPADOR.pdf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/classes/algoritmo/Graph.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Labirintos/Labirinto.txt" beforeDir="false" afterPath="$PROJECT_DIR$/Labirintos/Labirinto.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/classes/algoritmo/Poupador.class" beforeDir="false" afterPath="$PROJECT_DIR$/classes/algoritmo/Poupador.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/algoritmo/Poupador.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/algoritmo/Poupador.java" afterDir="false" />
     </list>
@@ -71,7 +74,14 @@
       <option name="project" value="LOCAL" />
       <updated>1647464629983</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Final">
+      <created>1647467663887</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1647467663887</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -87,7 +97,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="x" />
-    <option name="LAST_COMMIT_MESSAGE" value="x" />
+    <MESSAGE value="Final" />
+    <option name="LAST_COMMIT_MESSAGE" value="Final" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -96,6 +107,11 @@
           <url>file://$PROJECT_DIR$/src/algoritmo/path/Graph.java</url>
           <line>57</line>
           <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/algoritmo/Poupador.java</url>
+          <line>67</line>
+          <option name="timeStamp" value="12" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
